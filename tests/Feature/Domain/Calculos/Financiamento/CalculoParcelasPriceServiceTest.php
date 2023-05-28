@@ -38,4 +38,15 @@ class CalculoParcelasPriceServiceTest extends TestCase
         $this->assertEquals('3.34', $parcelas[4]['valorJuros']->tostring());
     }
 
+    public function test_calculo_valor_amortizazcoes_price(): void
+    {
+        $service = app()->make('App\Domain\Calculos\Financiamento\CalculoParcelasPriceService');
+        $parcelas = $service->calcularParcelas(new Decimal('900', 2), 5, new Decimal('0.0179', 9));
+
+        $this->assertEquals('173.67', $parcelas[0]['valorAmortizacao']->tostring());
+        $this->assertEquals('176.78', $parcelas[1]['valorAmortizacao']->tostring());
+        $this->assertEquals('179.94', $parcelas[2]['valorAmortizacao']->tostring());
+        $this->assertEquals('183.16', $parcelas[3]['valorAmortizacao']->tostring());
+        $this->assertEquals('186.44', $parcelas[4]['valorAmortizacao']->tostring());
+    }
 }

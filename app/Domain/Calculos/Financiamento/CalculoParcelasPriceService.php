@@ -11,8 +11,10 @@ class CalculoParcelasPriceService implements CalculoParcelasServiceInterface
         $valorPrestacao = $this->calcularValorPrestacao($valorTotal, $qtdParcelas, $taxaMensal);
         $parcelas = [];
         for ($i = 1; $i <= $qtdParcelas; $i++) {
+
             $parcelas[] = [
                 'numero' => $i,
+                'valorAmortizacao' => $this->calcularValorAmortizacao($valorTotal, $qtdParcelas, $taxaMensal, $i),
                 'valorJuros' => $this->calcularJurosParcela($valorTotal, $qtdParcelas, $taxaMensal, $i),
                 'valorPrestacao' => $valorPrestacao,
             ];
@@ -70,4 +72,16 @@ class CalculoParcelasPriceService implements CalculoParcelasServiceInterface
         return $saldoDevedor * $taxaMensal;
     }
 
+    /**
+     * Calcula o valor da amortização de uma parcela no sistema de amortização Price
+     */
+    private function calcularValorAmortizacao(Decimal $valorTotal, int $qtdParcelas, Decimal $taxaMensal, int $numeroParcela): Decimal
+    {
+        throw_if(($numeroParcela < 1 || $numeroParcela > $qtdParcelas), new \InvalidArgumentException('Número da parcela inválido'));
+
+        $valorPrestacao = $this->calcularValorPrestacao($valorTotal, $qtdParcelas, $taxaMensal);
+        $valorAmortizacao = $valorPrestacao - $this->calcularJurosParcela($valorTotal, $qtdParcelas, $taxaMensal, $numeroParcela);
+
+        return $this->arrendondarValor($valorAmortizacao);
+    }
 }
