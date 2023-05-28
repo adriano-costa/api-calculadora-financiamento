@@ -3,10 +3,8 @@
 namespace Tests\Feature\Models;
 
 use App\Models\Produto;
+use Decimal\Decimal;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Ramsey\Uuid\Type\Decimal;
 use Tests\TestCase;
 
 class ProdutoTest extends TestCase
