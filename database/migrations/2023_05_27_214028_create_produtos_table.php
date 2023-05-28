@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('produtos', function (Blueprint $table) {
             $table->id('CO_PRODUTO'); //CO_PRODUTO int NOT NULL primary key,
-            $table->string('NO_PRODUTO', 200);//NO_PRODUTO varchar(200) NOT NULL,
-            $table->unsignedDecimal ('PC_TAXA_JUROS', 10, 9);//PC_TAXA_JUROS numeric(10, 9) NOT NULL,
-            $table->unsignedSmallInteger('NU_MINIMO_MESES');//NU_MINIMO_MESES smallint NOT NULL,
-            $table->unsignedSmallInteger('NU_MAXIMO_MESES');//NU_MAXIMO_MESES smallint NULL,
-            $table->unsignedDecimal('VR_MINIMO', 18, 2);//VR_MINIMO numeric(18, 2) NOT NULL,
-            $table->unsignedDecimal('VR_MAXIMO', 18, 2);//VR_MAXIMO numeric(18, 2) NULL
+            $table->string('NO_PRODUTO', 200); //NO_PRODUTO varchar(200) NOT NULL,
+            $table->unsignedDecimal('PC_TAXA_JUROS', 10, 9); //PC_TAXA_JUROS numeric(10, 9) NOT NULL,
+            $table->unsignedSmallInteger('NU_MINIMO_MESES'); //NU_MINIMO_MESES smallint NOT NULL,
+            $table->unsignedSmallInteger('NU_MAXIMO_MESES')->nullable(); //NU_MAXIMO_MESES smallint NULL,
+            $table->unsignedDecimal('VR_MINIMO', 18, 2); //VR_MINIMO numeric(18, 2) NOT NULL,
+            $table->unsignedDecimal('VR_MAXIMO', 18, 2)->nullable(); //VR_MAXIMO numeric(18, 2) NULL
             $table->timestamps();
         });
     }
