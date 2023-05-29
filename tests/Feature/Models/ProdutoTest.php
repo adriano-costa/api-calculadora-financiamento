@@ -11,6 +11,18 @@ class ProdutoTest extends TestCase
 {
     use LazilyRefreshDatabase;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        Produto::truncate();
+    }
+
+    public function tearDown(): void
+    {
+        Produto::truncate();
+        parent::tearDown();
+    }
+
     public function test_consegue_consultar_produto(): void
     {
         Produto::factory()->create();

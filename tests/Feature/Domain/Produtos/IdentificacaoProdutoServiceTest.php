@@ -3,6 +3,7 @@
 namespace Test\Feature\Domain\Produtos;
 
 use App\Domain\Produtos\IdentificacaoProdutoService;
+use App\Models\Produto;
 use Decimal\Decimal;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\TestCase;
@@ -14,7 +15,14 @@ class IdentificacaoProdutoServiceTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        Produto::truncate();
         $this->artisan('db:seed', ['--class' => 'ProdutosSeeder']);
+    }
+
+    public function tearDown(): void
+    {
+        Produto::truncate();
+        parent::tearDown();
     }
 
     public function test_consegue_consultar_produto(): void
