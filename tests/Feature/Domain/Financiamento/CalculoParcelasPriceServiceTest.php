@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Feature\Domain\Calculos\Financiamento;
+namespace Test\Feature\Domain\Financiamento;
 
 use Decimal\Decimal;
 use Tests\TestCase;
@@ -9,7 +9,7 @@ class CalculoParcelasPriceServiceTest extends TestCase
 {
     public function test_gerar_numero_prestacoes_price(): void
     {
-        $service = app()->make('App\Domain\Calculos\Financiamento\CalculoParcelasPriceService');
+        $service = app()->make('App\Domain\Financiamento\CalculoParcelasPriceService');
         $parcelas = $service->calcularParcelas(new Decimal('900', 18), 5, new Decimal('0.0179', 9));
         $this->assertEquals(5, count($parcelas));
         for ($i = 0; $i < 5; $i++) {
@@ -19,7 +19,7 @@ class CalculoParcelasPriceServiceTest extends TestCase
 
     public function test_calculo_valor_prestacoes_price(): void
     {
-        $service = app()->make('App\Domain\Calculos\Financiamento\CalculoParcelasPriceService');
+        $service = app()->make('App\Domain\Financiamento\CalculoParcelasPriceService');
         $parcelas = $service->calcularParcelas(new Decimal('900', 18), 5, new Decimal('0.0179', 9));
         for ($i = 0; $i < 5; $i++) {
             $this->assertEquals('189.78', $parcelas[$i]['valorPrestacao']);
@@ -28,7 +28,7 @@ class CalculoParcelasPriceServiceTest extends TestCase
 
     public function test_calculo_valor_juros_price(): void
     {
-        $service = app()->make('App\Domain\Calculos\Financiamento\CalculoParcelasPriceService');
+        $service = app()->make('App\Domain\Financiamento\CalculoParcelasPriceService');
         $parcelas = $service->calcularParcelas(new Decimal('900', 18), 5, new Decimal('0.0179', 9));
 
         $this->assertEquals('16.11', $parcelas[0]['valorJuros']);
@@ -40,7 +40,7 @@ class CalculoParcelasPriceServiceTest extends TestCase
 
     public function test_calculo_valor_amortizazcoes_price(): void
     {
-        $service = app()->make('App\Domain\Calculos\Financiamento\CalculoParcelasPriceService');
+        $service = app()->make('App\Domain\Financiamento\CalculoParcelasPriceService');
         $parcelas = $service->calcularParcelas(new Decimal('900', 18), 5, new Decimal('0.0179', 9));
 
         $this->assertEquals('173.67', $parcelas[0]['valorAmortizacao']);

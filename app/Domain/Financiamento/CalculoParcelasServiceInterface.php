@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Calculos\Financiamento;
+namespace App\Domain\Financiamento;
 
 use Decimal\Decimal;
 
