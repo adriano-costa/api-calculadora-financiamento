@@ -26,4 +26,21 @@ class IdentificacaoProdutoServiceTest extends TestCase
         $this->assertEquals('Produto 1', $produto->NO_PRODUTO);
     }
 
+    public function test_consegue_consultar_produto_com_valor_maximo_null(): void
+    {
+        $service = app()->make(IdentificacaoProdutoService::class);
+        $valor = new Decimal('2000000.01', 18);
+        $prazo = 96;
+        $produto = $service->consultarProduto($valor, $prazo);
+        $this->assertEquals('Produto 4', $produto->NO_PRODUTO);
+    }
+
+    public function test_consegue_consultar_produto_com_prazo_maximo_null(): void
+    {
+        $service = app()->make(IdentificacaoProdutoService::class);
+        $valor = new Decimal('1000000.01', 18);
+        $prazo = 120;
+        $produto = $service->consultarProduto($valor, $prazo);
+        $this->assertEquals('Produto 4', $produto->NO_PRODUTO);
+    }
 }
