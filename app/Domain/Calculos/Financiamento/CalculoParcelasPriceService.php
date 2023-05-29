@@ -11,12 +11,13 @@ class CalculoParcelasPriceService implements CalculoParcelasServiceInterface
         $valorPrestacao = $this->calcularValorPrestacao($valorTotal, $qtdParcelas, $taxaMensal);
         $parcelas = [];
         for ($i = 1; $i <= $qtdParcelas; $i++) {
-
+            $amortizacao = $this->calcularValorAmortizacao($valorTotal, $qtdParcelas, $taxaMensal, $i);
+            $juros = $this->calcularJurosParcela($valorTotal, $qtdParcelas, $taxaMensal, $i);
             $parcelas[] = [
                 'numero' => $i,
-                'valorAmortizacao' => $this->calcularValorAmortizacao($valorTotal, $qtdParcelas, $taxaMensal, $i),
-                'valorJuros' => $this->calcularJurosParcela($valorTotal, $qtdParcelas, $taxaMensal, $i),
-                'valorPrestacao' => $valorPrestacao,
+                'valorAmortizacao' => $this->formatarValor($amortizacao),
+                'valorJuros' => $this->formatarValor($juros),
+                'valorPrestacao' => $this->formatarValor($valorPrestacao),
             ];
         }
 
@@ -31,7 +32,7 @@ class CalculoParcelasPriceService implements CalculoParcelasServiceInterface
         $fator = $this->calculaFatorPrice($taxaMensal, $qtdParcelas);
         $valorPrestacao = $valor * $taxaMensal * $fator;
 
-        return $this->arrendondarValor($valorPrestacao);
+        return $valorPrestacao;
     }
 
     private function calculaFatorPrice(Decimal $taxaMensal, int $qtdParcelas): Decimal
@@ -40,9 +41,9 @@ class CalculoParcelasPriceService implements CalculoParcelasServiceInterface
             / (((1 + $taxaMensal) ** $qtdParcelas) - 1);
     }
 
-    private function arrendondarValor(Decimal $valor, int $casasDecimais = 2): Decimal
+    private function formatarValor(Decimal $valor, int $casasDecimais = 2): string
     {
-        return $valor->round(2, Decimal::ROUND_HALF_EVEN);
+        return $valor->round(2, Decimal::ROUND_HALF_EVEN)->toFixed($casasDecimais);
     }
 
     /**
@@ -56,7 +57,7 @@ class CalculoParcelasPriceService implements CalculoParcelasServiceInterface
         $saldoDevedor = $this->calcularSaldoDevedor($valorTotal, $taxaMensal, $numeroParcela, $valorParcela);
         $jurosParcela = $this->calcularJuros($saldoDevedor, $taxaMensal);
 
-        return $this->arrendondarValor($jurosParcela);
+        return $jurosParcela;
     }
 
     private function calcularSaldoDevedor(Decimal $valorTotal, Decimal $taxaMensal, int $numeroParcela, Decimal $valorParcela): Decimal
@@ -82,6 +83,6 @@ class CalculoParcelasPriceService implements CalculoParcelasServiceInterface
         $valorPrestacao = $this->calcularValorPrestacao($valorTotal, $qtdParcelas, $taxaMensal);
         $valorAmortizacao = $valorPrestacao - $this->calcularJurosParcela($valorTotal, $qtdParcelas, $taxaMensal, $numeroParcela);
 
-        return $this->arrendondarValor($valorAmortizacao);
+        return $valorAmortizacao;
     }
 }

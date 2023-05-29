@@ -16,7 +16,7 @@ class CalculoParcelasSacService implements CalculoParcelasServiceInterface
             $prestacao = $this->calcularValorPrestacao($valorTotal, $qtdParcelas, $taxaMensal, $i);
             $parcelas[] = [
                 'numero' => $i,
-                'valorAmortizacao' => $valorAmortizacao,
+                'valorAmortizacao' => $this->formatarValor($valorAmortizacao),
                 'valorJuros' => $this->formatarValor($juros),
                 'valorPrestacao' => $this->formatarValor($prestacao),
             ];
