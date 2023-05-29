@@ -22,6 +22,8 @@ class IdentificacaoProdutoService
             })
             ->first();
 
+        throw_if(is_null($produto), \InvalidArgumentException::class, 'Parametros incompatíveis com os produtos cadastrados.');
+
         return $produto;
     }
 }

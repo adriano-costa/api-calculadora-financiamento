@@ -43,4 +43,14 @@ class IdentificacaoProdutoServiceTest extends TestCase
         $produto = $service->consultarProduto($valor, $prazo);
         $this->assertEquals('Produto 4', $produto->NO_PRODUTO);
     }
+
+    public function test_lanca_excecao_com_valor_prazo_incompativel()
+    {
+        $service = app()->make(IdentificacaoProdutoService::class);
+        $valor = new Decimal('1000.00', 18);
+        $prazo = 96;
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Parametros incompatíveis com os produtos cadastrados.');
+        $service->consultarProduto($valor, $prazo);
+    }
 }
