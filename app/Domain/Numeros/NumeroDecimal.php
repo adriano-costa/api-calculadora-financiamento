@@ -3,6 +3,7 @@
 namespace App\Domain\Numeros;
 
 use Brick\Math\BigDecimal as MathBigDecimal;
+use Brick\Math\RoundingMode;
 
 class NumeroDecimal
 {
@@ -12,13 +13,13 @@ class NumeroDecimal
 
     public function __construct(float|string|MathBigDecimal $valor)
     {
-        if (! $valor instanceof BigDecimal) {
+        if (! $valor instanceof MathBigDecimal) {
             $this->valor = MathBigDecimal::of($valor, self::SCALE);
 
             return;
         }
 
-        $this->valor = $valor->toScale(self::SCALE);
+        $this->valor = $valor->toScale(self::SCALE, RoundingMode::HALF_CEILING);
     }
 
     public function getValor()
