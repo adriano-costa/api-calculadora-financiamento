@@ -64,4 +64,9 @@ class CalculoParcelasSacService implements CalculoParcelasServiceInterface
     {
         return $valorTotal->dividedBy($qtdParcelas);
     }
+
+    public function getNomeSitema(): string
+    {
+        return 'SAC';
+    }
 }

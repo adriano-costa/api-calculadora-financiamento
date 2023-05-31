@@ -90,4 +90,9 @@ class CalculoParcelasPriceService implements CalculoParcelasServiceInterface
 
         return $valorAmortizacao;
     }
+
+    public function getNomeSitema(): string
+    {
+        return 'PRICE';
+    }
 }
