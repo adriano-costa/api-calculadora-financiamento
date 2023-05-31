@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Domain\Numeros\Dinheiro;
+use App\Domain\Numeros\Taxa;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,11 +22,11 @@ class ProdutoFactory extends Factory
 
         return [
             'NO_PRODUTO' => $this->faker->name,
-            'PC_TAXA_JUROS' => $this->faker->randomFloat(4, 0, 1),
-            'NU_MINIMO_MESES' => $this->faker->randomNumber(2),
-            'NU_MAXIMO_MESES' => $this->faker->randomNumber(2),
-            'VR_MINIMO' => $valor,
-            'VR_MAXIMO' => 100 * $valor,
+            'PC_TAXA_JUROS' => new Taxa($this->faker->randomFloat(4, 0, 1)),
+            'NU_MINIMO_MESES' => $this->faker->randomNumber(1),
+            'NU_MAXIMO_MESES' => $this->faker->randomNumber(3),
+            'VR_MINIMO' => new Dinheiro($valor),
+            'VR_MAXIMO' => new Dinheiro(100 * $valor),
         ];
     }
 }
