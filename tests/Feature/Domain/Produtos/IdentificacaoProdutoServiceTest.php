@@ -5,13 +5,10 @@ namespace Test\Feature\Domain\Produtos;
 use App\Domain\Produtos\IdentificacaoProdutoService;
 use App\Models\Produto;
 use Decimal\Decimal;
-use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\TestCase;
 
 class IdentificacaoProdutoServiceTest extends TestCase
 {
-    use LazilyRefreshDatabase;
-
     public function setUp(): void
     {
         parent::setUp();
