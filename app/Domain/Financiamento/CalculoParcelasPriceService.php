@@ -2,17 +2,23 @@
 
 namespace App\Domain\Financiamento;
 
-use Decimal\Decimal;
+use App\Domain\Numeros\Dinheiro;
+use App\Domain\Numeros\Taxa;
+use Brick\Math\BigRational;
+use Brick\Math\RoundingMode;
 
 class CalculoParcelasPriceService implements CalculoParcelasServiceInterface
 {
-    public function calcularParcelas(Decimal $valorTotal, int $qtdParcelas, Decimal $taxaMensal): array
+    public function calcularParcelas(Dinheiro $valorFinanciado, int $qtdParcelas, Taxa $taxaMensal): array
     {
-        $valorPrestacao = $this->calcularValorPrestacao($valorTotal, $qtdParcelas, $taxaMensal);
+        $valorTotal = $valorFinanciado->getValor()->toBigRational();
+        $taxa = $taxaMensal->getValor()->toBigRational();
+
+        $valorPrestacao = $this->calcularValorPrestacao($valorTotal, $qtdParcelas, $taxa);
         $parcelas = [];
         for ($i = 1; $i <= $qtdParcelas; $i++) {
-            $amortizacao = $this->calcularValorAmortizacao($valorTotal, $qtdParcelas, $taxaMensal, $i);
-            $juros = $this->calcularJurosParcela($valorTotal, $qtdParcelas, $taxaMensal, $i);
+            $amortizacao = $this->calcularValorAmortizacao($valorTotal, $qtdParcelas, $taxa, $i);
+            $juros = $this->calcularJurosParcela($valorTotal, $qtdParcelas, $taxa, $i);
             $parcelas[] = [
                 'numero' => $i,
                 'valorAmortizacao' => $this->formatarValor($amortizacao),
@@ -27,29 +33,30 @@ class CalculoParcelasPriceService implements CalculoParcelasServiceInterface
     /**
      * Calcula o valor da prestação em um sistema de amortização Price
      */
-    private function calcularValorPrestacao(Decimal $valor, int $qtdParcelas, Decimal $taxaMensal): Decimal
+    private function calcularValorPrestacao(BigRational $valor, int $qtdParcelas, BigRational $taxaMensal): BigRational
     {
         $fator = $this->calculaFatorPrice($taxaMensal, $qtdParcelas);
-        $valorPrestacao = $valor * $taxaMensal * $fator;
+        $valorPrestacao = $valor->multipliedBy($taxaMensal)->multipliedBy($fator);
 
         return $valorPrestacao;
     }
 
-    private function calculaFatorPrice(Decimal $taxaMensal, int $qtdParcelas): Decimal
+    private function calculaFatorPrice(BigRational $taxaMensal, int $qtdParcelas): BigRational
     {
-        return ((1 + $taxaMensal) ** $qtdParcelas)
-            / (((1 + $taxaMensal) ** $qtdParcelas) - 1);
+        return $taxaMensal->plus(1)->power($qtdParcelas)->dividedBy(
+            $taxaMensal->plus(1)->power($qtdParcelas)->minus(1)
+        );
     }
 
-    private function formatarValor(Decimal $valor, int $casasDecimais = 2): string
+    private function formatarValor(BigRational $valor, int $casasDecimais = 2): string
     {
-        return $valor->round(2, Decimal::ROUND_HALF_EVEN)->toFixed($casasDecimais);
+        return $valor->toScale($casasDecimais, RoundingMode::HALF_CEILING);
     }
 
     /**
      * Calcula o valor dos juros de uma parcela no sistema de amortização Price
      */
-    private function calcularJurosParcela(Decimal $valorTotal, int $qtdParcelas, Decimal $taxaMensal, int $numeroParcela): Decimal
+    private function calcularJurosParcela(BigRational $valorTotal, int $qtdParcelas, BigRational $taxaMensal, int $numeroParcela): BigRational
     {
         throw_if(($numeroParcela < 1 || $numeroParcela > $qtdParcelas), new \InvalidArgumentException('Número da parcela inválido'));
 
@@ -60,28 +67,32 @@ class CalculoParcelasPriceService implements CalculoParcelasServiceInterface
         return $jurosParcela;
     }
 
-    private function calcularSaldoDevedor(Decimal $valorTotal, Decimal $taxaMensal, int $numeroParcela, Decimal $valorParcela): Decimal
+    private function calcularSaldoDevedor(BigRational $valorTotal, BigRational $taxaMensal, int $numeroParcela, BigRational $valorParcela): BigRational
     {
-
-        return $valorTotal * ((1 + $taxaMensal) ** ($numeroParcela - 1))
-            - $valorParcela * (((1 + $taxaMensal) ** ($numeroParcela - 1)) - 1) / $taxaMensal;
-
+        return $valorTotal->multipliedBy(
+            $taxaMensal->plus(1)->power($numeroParcela - 1)
+        )->minus(
+            $valorParcela->multipliedBy(
+                $taxaMensal->plus(1)->power($numeroParcela - 1)->minus(1)->dividedBy($taxaMensal)
+            )
+        );
     }
 
-    private function calcularJuros(Decimal $saldoDevedor, Decimal $taxaMensal): Decimal
+    private function calcularJuros(BigRational $saldoDevedor, BigRational $taxaMensal): BigRational
     {
-        return $saldoDevedor * $taxaMensal;
+        return $saldoDevedor->multipliedBy($taxaMensal);
     }
 
     /**
      * Calcula o valor da amortização de uma parcela no sistema de amortização Price
      */
-    private function calcularValorAmortizacao(Decimal $valorTotal, int $qtdParcelas, Decimal $taxaMensal, int $numeroParcela): Decimal
+    private function calcularValorAmortizacao(BigRational $valorTotal, int $qtdParcelas, BigRational $taxaMensal, int $numeroParcela): BigRational
     {
         throw_if(($numeroParcela < 1 || $numeroParcela > $qtdParcelas), new \InvalidArgumentException('Número da parcela inválido'));
 
         $valorPrestacao = $this->calcularValorPrestacao($valorTotal, $qtdParcelas, $taxaMensal);
-        $valorAmortizacao = $valorPrestacao - $this->calcularJurosParcela($valorTotal, $qtdParcelas, $taxaMensal, $numeroParcela);
+        $jurosParcela = $this->calcularJurosParcela($valorTotal, $qtdParcelas, $taxaMensal, $numeroParcela);
+        $valorAmortizacao = $valorPrestacao->minus($jurosParcela);
 
         return $valorAmortizacao;
     }

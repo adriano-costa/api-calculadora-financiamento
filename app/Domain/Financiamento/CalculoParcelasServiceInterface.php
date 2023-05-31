@@ -2,9 +2,10 @@
 
 namespace App\Domain\Financiamento;
 
-use Decimal\Decimal;
+use App\Domain\Numeros\Dinheiro;
+use App\Domain\Numeros\Taxa;
 
 interface CalculoParcelasServiceInterface
 {
-    public function calcularParcelas(Decimal $valorTotal, int $qtdParcelas, Decimal $taxaMensal): array;
+    public function calcularParcelas(Dinheiro $valorFinanciado, int $qtdParcelas, Taxa $taxaMensal): array;
 }
