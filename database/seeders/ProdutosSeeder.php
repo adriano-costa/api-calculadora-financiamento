@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Produto;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ProdutosSeeder extends Seeder
 {
@@ -50,8 +51,15 @@ class ProdutosSeeder extends Seeder
                 'VR_MAXIMO' => null,
             ],
         ];
+
+        if (config('database.default') == 'sqlsrv') {
+            DB::unprepared('SET IDENTITY_INSERT produtos ON');
+        }
         foreach ($produtos as $produto) {
             Produto::create($produto);
+        }
+        if (config('database.default') == 'sqlsrv') {
+            DB::unprepared('SET IDENTITY_INSERT produtos OFF');
         }
     }
 }
