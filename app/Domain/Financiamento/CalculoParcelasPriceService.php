@@ -5,7 +5,6 @@ namespace App\Domain\Financiamento;
 use App\Domain\Numeros\Dinheiro;
 use App\Domain\Numeros\Taxa;
 use Brick\Math\BigRational;
-use Brick\Math\RoundingMode;
 
 class CalculoParcelasPriceService implements CalculoParcelasServiceInterface
 {
@@ -21,9 +20,9 @@ class CalculoParcelasPriceService implements CalculoParcelasServiceInterface
             $juros = $this->calcularJurosParcela($valorTotal, $qtdParcelas, $taxa, $i);
             $parcelas[] = [
                 'numero' => $i,
-                'valorAmortizacao' => $this->formatarValor($amortizacao),
-                'valorJuros' => $this->formatarValor($juros),
-                'valorPrestacao' => $this->formatarValor($valorPrestacao),
+                'valorAmortizacao' => new Dinheiro($amortizacao),
+                'valorJuros' => new Dinheiro($juros),
+                'valorPrestacao' => new Dinheiro($valorPrestacao),
             ];
         }
 
@@ -46,11 +45,6 @@ class CalculoParcelasPriceService implements CalculoParcelasServiceInterface
         return $taxaMensal->plus(1)->power($qtdParcelas)->dividedBy(
             $taxaMensal->plus(1)->power($qtdParcelas)->minus(1)
         );
-    }
-
-    private function formatarValor(BigRational $valor, int $casasDecimais = 2): string
-    {
-        return $valor->toScale($casasDecimais, RoundingMode::HALF_CEILING);
     }
 
     /**

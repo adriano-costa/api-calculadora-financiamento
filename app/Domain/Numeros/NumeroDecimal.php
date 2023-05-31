@@ -3,6 +3,7 @@
 namespace App\Domain\Numeros;
 
 use Brick\Math\BigDecimal as MathBigDecimal;
+use Brick\Math\BigRational;
 use Brick\Math\RoundingMode;
 
 class NumeroDecimal
@@ -11,7 +12,7 @@ class NumeroDecimal
 
     private MathBigDecimal $valor;
 
-    public function __construct(float|string|MathBigDecimal $valor)
+    public function __construct(float|string|MathBigDecimal|BigRational $valor)
     {
         if ($valor instanceof NumeroDecimal) {
             $this->valor = $valor->getValor()->toScale(static::SCALE, RoundingMode::HALF_CEILING);
@@ -19,7 +20,7 @@ class NumeroDecimal
             return;
         }
 
-        if ($valor instanceof MathBigDecimal) {
+        if ($valor instanceof MathBigDecimal || $valor instanceof BigRational) {
             $this->valor = $valor->toScale(static::SCALE, RoundingMode::HALF_CEILING);
 
             return;
