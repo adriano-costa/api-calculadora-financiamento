@@ -31,7 +31,6 @@ class ProdutoTest extends TestCase
     public function test_produto_possui_todas_as_colunas_com_seus_valores()
     {
         Produto::factory()->create([
-            'CO_PRODUTO' => 1,
             'NO_PRODUTO' => 'Produto 1',
             'PC_TAXA_JUROS' => new Taxa(0.123456789),
             'NU_MINIMO_MESES' => 1,
@@ -40,7 +39,8 @@ class ProdutoTest extends TestCase
             'VR_MAXIMO' => new Dinheiro(123000789.17),
         ]);
 
-        $produto = Produto::find(1);
+        $produto = Produto::where('NO_PRODUTO', 'Produto 1')->first();
+
         $this->assertEquals(1, $produto->CO_PRODUTO);
         $this->assertEquals('Produto 1', $produto->NO_PRODUTO);
         $this->assertEquals(new Taxa('0.123456789'), $produto->PC_TAXA_JUROS);
