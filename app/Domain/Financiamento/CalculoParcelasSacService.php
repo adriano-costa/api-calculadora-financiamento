@@ -2,23 +2,28 @@
 
 namespace App\Domain\Financiamento;
 
-use Decimal\Decimal;
+use App\Domain\Numeros\Dinheiro;
+use App\Domain\Numeros\Taxa;
+use Brick\Math\BigRational;
 
 class CalculoParcelasSacService implements CalculoParcelasServiceInterface
 {
-    public function calcularParcelas(Decimal $valorTotal, int $qtdParcelas, Decimal $taxaMensal): array
+    public function calcularParcelas(Dinheiro $valorFinanciado, int $qtdParcelas, Taxa $taxaMensal): array
     {
+        $valorTotal = $valorFinanciado->getValor()->toBigRational();
+        $taxa = $taxaMensal->getValor()->toBigRational();
+
         $valorAmortizacao = $this->calcularValorAmortizacao($valorTotal, $qtdParcelas);
 
         $parcelas = [];
         for ($i = 1; $i <= $qtdParcelas; $i++) {
-            $juros = $this->calcularJurosParcela($valorTotal, $qtdParcelas, $taxaMensal, $i);
-            $prestacao = $this->calcularValorPrestacao($valorTotal, $qtdParcelas, $taxaMensal, $i);
+            $juros = $this->calcularJurosParcela($valorTotal, $qtdParcelas, $taxa, $i);
+            $prestacao = $this->calcularValorPrestacao($valorTotal, $qtdParcelas, $taxa, $i);
             $parcelas[] = [
                 'numero' => $i,
-                'valorAmortizacao' => $this->formatarValor($valorAmortizacao),
-                'valorJuros' => $this->formatarValor($juros),
-                'valorPrestacao' => $this->formatarValor($prestacao),
+                'valorAmortizacao' => new Dinheiro($valorAmortizacao),
+                'valorJuros' => new Dinheiro($juros),
+                'valorPrestacao' => new Dinheiro($prestacao),
             ];
         }
 
@@ -28,29 +33,26 @@ class CalculoParcelasSacService implements CalculoParcelasServiceInterface
     /**
      * Calcula o valor da prestação em um sistema de amortização Sac
      */
-    private function calcularValorPrestacao(Decimal $valorTotal, int $qtdParcelas, Decimal $taxaMensal, int $numeroParcela): Decimal
+    private function calcularValorPrestacao(BigRational $valorTotal, int $qtdParcelas, BigRational $taxaMensal, int $numeroParcela): BigRational
     {
-        $valorPrestacao = $this->calcularValorAmortizacao($valorTotal, $qtdParcelas)
-            + $this->calcularJurosParcela($valorTotal, $qtdParcelas, $taxaMensal, $numeroParcela);
+        throw_if(($numeroParcela < 1 || $numeroParcela > $qtdParcelas), new \InvalidArgumentException('Número da parcela inválido'));
 
-        return $valorPrestacao;
-    }
+        $amortizacao = $this->calcularValorAmortizacao($valorTotal, $qtdParcelas);
+        $juros = $this->calcularJurosParcela($valorTotal, $qtdParcelas, $taxaMensal, $numeroParcela);
 
-    private function formatarValor(Decimal $valor, int $casasDecimais = 2): string
-    {
-        return $valor->round(2, Decimal::ROUND_HALF_EVEN)->toFixed($casasDecimais);
+        return $amortizacao->plus($juros);
     }
 
     /**
      * Calcula o valor dos juros de uma parcela no sistema de amortização Sac
      */
-    private function calcularJurosParcela(Decimal $valorTotal, int $qtdParcelas, Decimal $taxaMensal, int $numeroParcela): Decimal
+    private function calcularJurosParcela(BigRational $valorTotal, int $qtdParcelas, BigRational $taxaMensal, int $numeroParcela): BigRational
     {
         throw_if(($numeroParcela < 1 || $numeroParcela > $qtdParcelas), new \InvalidArgumentException('Número da parcela inválido'));
 
         $amortizacao = $this->calcularValorAmortizacao($valorTotal, $qtdParcelas);
-        $saldo = $valorTotal - ($numeroParcela - 1) * $amortizacao;
-        $juros = $saldo * $taxaMensal;
+        $saldo = $valorTotal->minus($amortizacao->multipliedBy($numeroParcela - 1));
+        $juros = $saldo->multipliedBy($taxaMensal);
 
         return $juros;
     }
@@ -58,8 +60,8 @@ class CalculoParcelasSacService implements CalculoParcelasServiceInterface
     /**
      * Calcula o valor da amortização de uma parcela no sistema de amortização Sac
      */
-    private function calcularValorAmortizacao(Decimal $valorTotal, int $qtdParcelas): Decimal
+    private function calcularValorAmortizacao(BigRational $valorTotal, int $qtdParcelas): BigRational
     {
-        return $valorTotal / new Decimal($qtdParcelas, 18);
+        return $valorTotal->dividedBy($qtdParcelas);
     }
 }
