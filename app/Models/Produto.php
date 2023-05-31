@@ -2,19 +2,24 @@
 
 namespace App\Models;
 
+use App\Casts\DinheiroCast;
+use App\Casts\TaxaCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Produto extends Model
 {
     use HasFactory;
+
     protected $table = 'produtos';
+
     protected $primaryKey = 'CO_PRODUTO';
+
     protected $guarded = ['CO_PRODUTO'];
 
     protected $casts = [
-        'PC_TAXA_JUROS' => 'decimal:10',
-        'VR_MINIMO' => 'decimal:18',
-        'VR_MAXIMO' => 'decimal:18',
+        'PC_TAXA_JUROS' => TaxaCast::class,
+        'VR_MINIMO' => DinheiroCast::class,
+        'VR_MAXIMO' => DinheiroCast::class,
     ];
 }
