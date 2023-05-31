@@ -13,13 +13,19 @@ class NumeroDecimal
 
     public function __construct(float|string|MathBigDecimal $valor)
     {
-        if (! $valor instanceof MathBigDecimal) {
-            $this->valor = MathBigDecimal::of($valor, self::SCALE);
+        if ($valor instanceof NumeroDecimal) {
+            $this->valor = $valor->getValor()->toScale(static::SCALE, RoundingMode::HALF_CEILING);
 
             return;
         }
 
-        $this->valor = $valor->toScale(self::SCALE, RoundingMode::HALF_CEILING);
+        if ($valor instanceof MathBigDecimal) {
+            $this->valor = $valor->toScale(static::SCALE, RoundingMode::HALF_CEILING);
+
+            return;
+        }
+
+        $this->valor = MathBigDecimal::of($valor, static::SCALE);
     }
 
     public function getValor()
