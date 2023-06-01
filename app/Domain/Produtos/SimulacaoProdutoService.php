@@ -12,7 +12,7 @@ class SimulacaoProdutoService
 {
     private array $sistemasAmortizacao;
 
-    public function __construct(CalculoParcelasSacService $serviceSac, CalculoParcelasPriceService $servicePrice)
+    public function __construct(CalculoParcelasPriceService $servicePrice, CalculoParcelasSacService $serviceSac)
     {
         $this->adicionarSistemaAmortizacao($serviceSac);
         $this->adicionarSistemaAmortizacao($servicePrice);
