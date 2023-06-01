@@ -33,4 +33,14 @@ class NumeroDecimal
     {
         return $this->valor;
     }
+
+    public function toFloat()
+    {
+        return $this->valor->toFloat();
+    }
+
+    public function __toString()
+    {
+        return $this->valor->__toString();
+    }
 }
