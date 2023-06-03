@@ -26,7 +26,7 @@ class NumeroDecimal
             return;
         }
 
-        $this->valor = MathBigDecimal::of($valor, static::SCALE);
+        $this->valor = MathBigDecimal::of($valor)->toScale(static::SCALE, RoundingMode::HALF_CEILING);
     }
 
     public function getValor()
