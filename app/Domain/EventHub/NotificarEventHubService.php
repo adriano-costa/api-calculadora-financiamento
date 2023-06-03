@@ -8,8 +8,9 @@ class NotificarEventHubService
 {
     public function notificar(array $resposta): void
     {
-        $host = env('EVENT_HUB_HOST');
-        $url = 'https://'.env('EVENT_HUB_HOST').'/'.env('EVENT_HUB_ENTITY_PATH').'/messages';
+        $host = config('eventhub.host');
+        $entity = config('eventhub.entity_path');
+        $url = 'https://'.$host.'/'.$entity.'/messages';
 
         $respostaStringJson = json_encode($resposta);
 
@@ -32,9 +33,11 @@ class NotificarEventHubService
 
     private function gerarAssinaturaEventHub()
     {
-        $sasKeyName = env('EVENT_HUB_SAS_KEY_NAME');
-        $uri = env('EVENT_HUB_HOST').'/'.env('EVENT_HUB_ENTITY_PATH');  //'eventhack.servicebus.windows.net/simulacoes';
-        $sasKeyValue = env('EVENT_HUB_SAS_KEY');
+        $host = config('eventhub.host');
+        $entity = config('eventhub.entity_path');
+        $uri = $host.'/'.$entity;
+        $sasKeyName = config('eventhub.sas_key_name');
+        $sasKeyValue = config('eventhub.sas_key');
 
         return $this->generateSasToken($uri, $sasKeyName, $sasKeyValue);
     }
