@@ -6,6 +6,7 @@ use App\Domain\Numeros\CastArrayComDecimaisService;
 use App\Domain\Numeros\Dinheiro;
 use App\Domain\Produtos\MontaRespostaSimulacaoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class SimulacaoController extends Controller
 {
@@ -29,37 +30,34 @@ class SimulacaoController extends Controller
 
             $this->enviarParaEventHub($respostaEmFloat);
 
-            //return response()->json([$envioEventHub]);
             return response()->json($respostaEmFloat);
         } catch (\Exception $e) {
             return response()->json(['erro' => $e->getMessage()], 400);
         }
     }
 
-    private function enviarParaEventHub(array $resposta): string
+    private function enviarParaEventHub(array $resposta): void
     {
         $host = env('EVENT_HUB_HOST');
         $url = 'https://'.env('EVENT_HUB_HOST').'/'.env('EVENT_HUB_ENTITY_PATH').'/messages';
-        $respostaStringJson = json_encode($resposta);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $respostaStringJson);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json',
-            'Authorization: '.$this->gerarAssinaturaEventHub(),
-            'Host: '.$host,
-            'Content-Length: '.strlen($respostaStringJson),
-        ]);
 
-        $result = curl_exec($ch);
-        if (curl_errno($ch)) {
-            throw new \Exception('Error: '.curl_error($ch));
+        $respostaStringJson = json_encode($resposta);
+
+        $resultado = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => $this->gerarAssinaturaEventHub(),
+            'Host' => $host,
+            'Content-Length' => strlen($respostaStringJson),
+        ])
+            ->post($url, $respostaStringJson);
+
+        if ($resultado->failed()) {
+            throw new \Exception('Erro: '.$resultado->body());
         }
 
-        return $result;
+        if ($resultado->status() != 201) {
+            throw new \Exception('Erro: Aplicação Aplicação não conseguiu enviar a mensagem para o EventHub. Código de erro: '.$resultado->status().'. Mensagem: '.$resultado->body().'.');
+        }
     }
 
     private function gerarAssinaturaEventHub()
