@@ -11,6 +11,7 @@ class ApiSimulacaoTest extends TestCase
     {
         parent::setUp();
         $this->artisan('db:seed');
+        //mockar o serviço de notificação eventhub
     }
 
     public function tearDown(): void
@@ -21,6 +22,10 @@ class ApiSimulacaoTest extends TestCase
 
     public function test_the_application_returns_a_successful_response(): void
     {
+        $this->mock(\App\Domain\EventHub\NotificarEventHubService::class, function ($mock) {
+            $mock->shouldReceive('notificar')->once();
+        });
+
         $response = $this->postJson('/', ['valorDesejado' => 900, 'prazo' => 5]);
 
         $response
