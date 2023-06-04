@@ -20,7 +20,7 @@ class ApiSimulacaoTest extends TestCase
         parent::tearDown();
     }
 
-    public function test_the_application_returns_a_successful_response(): void
+    public function test_aplicacao_retorna_resposta_bem_sucussedida(): void
     {
         $this->mock(\App\Domain\EventHub\NotificarEventHubService::class, function ($mock) {
             $mock->shouldReceive('notificar')->once();
@@ -106,6 +106,17 @@ class ApiSimulacaoTest extends TestCase
                         ],
                     ],
                 ],
+            ]);
+    }
+
+    public function test_aplicacao_retorna_mensagem_de_erro_para_parametro_com_valor_indequado(): void
+    {
+        $response = $this->postJson('/', ['valorDesejado' => 900, 'prazo' => 96]);
+
+        $response
+            ->assertStatus(400)
+            ->assertJson([
+                'erro' => 'Parametros incompativeis com os produtos cadastrados.',
             ]);
     }
 }

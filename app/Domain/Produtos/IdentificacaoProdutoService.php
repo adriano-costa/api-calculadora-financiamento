@@ -23,7 +23,7 @@ class IdentificacaoProdutoService
             })
             ->get();
 
-        throw_if($produtos->isEmpty(), \InvalidArgumentException::class, 'Parametros incompatíveis com os produtos cadastrados.');
+        throw_if($produtos->isEmpty(), \InvalidArgumentException::class, 'Parametros incompativeis com os produtos cadastrados.');
         throw_if($produtos->count() > 1, \DomainException::class, 'Os parametros de simulação apontam para mais de um produto. Essa situação não foi especificada.');
 
         return $produtos->first();

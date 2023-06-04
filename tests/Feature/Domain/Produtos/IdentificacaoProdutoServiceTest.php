@@ -55,7 +55,7 @@ class IdentificacaoProdutoServiceTest extends TestCase
         $valor = new Dinheiro('1000.00');
         $prazo = 96;
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Parametros incompatíveis com os produtos cadastrados.');
+        $this->expectExceptionMessage('Parametros incompativeis com os produtos cadastrados.');
         $this->service->consultarProduto($valor, $prazo);
     }
 
