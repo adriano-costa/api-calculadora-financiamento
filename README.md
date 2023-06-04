@@ -1,6 +1,6 @@
 ## API Calculadora Financiamento
 
-Projeto simples que implementa uma api para uma calculadora de financiamentos.
+Projeto simples que implementa uma API para uma calculadora de financiamentos.
 Esse projeto foi desenvolvido como atividade avaliativa para participação no processo seletivo para o Hackathon Caixa VITEC 2023.
 
 ## 🚀 Começando
@@ -12,8 +12,8 @@ Consulte **[Descrição Geral do Projeto](#descrição-geral-do-projeto)** para 
 ### 📋 Pré-requisitos
 
 Para execução deste projeto é necessário ter instalado em sua máquina o runtime do [PHP](https://www.php.net/) em versão 8.2.6 ou superior. Para gerenciamento das dependências do projeto é necessário ter instalado o [Composer](https://getcomposer.org/).
-Sendo um projeto desenvolvido a partir do framework [Laravel](https://laravel.com/), é necessário ter instaladas as extenções necessárias ao laravel instaladas conforme descrito na [documentação](https://laravel.com/docs/10.x/deployment#server-requirements).
-Adicionamente serão necessárias as extenções PHP [SQLSRV](https://www.php.net/manual/pt_BR/book.sqlsrv.php), [PDO_SQLSRV](https://www.php.net/manual/pt_BR/ref.pdo-sqlsrv.php), [BCMATH](https://www.php.net/manual/en/book.bc.php) e [GMP](https://www.php.net/manual/en/book.gmp.php).
+Sendo um projeto desenvolvido a partir do framework [Laravel](https://laravel.com/), é necessário ter instaladas as extensões necessárias ao Laravel instaladas conforme descrito na [documentação](https://laravel.com/docs/10.x/deployment#server-requirements).
+Adicionalmente, serão necessárias as extensões PHP [SQLSRV](https://www.php.net/manual/pt_BR/book.sqlsrv.php), [PDO_SQLSRV](https://www.php.net/manual/pt_BR/ref.pdo-sqlsrv.php), [BCMATH](https://www.php.net/manual/en/book.bc.php) e [GMP](https://www.php.net/manual/en/book.gmp.php).
 
 ### 🔧 Instalação
 
@@ -24,7 +24,7 @@ composer install
 ```
 
 Após a instalação das dependências, é necessário configurar o arquivo .env com as informações de conexão com o banco de dados. Para isso, copie o arquivo .env.example para .env e edite as informações de conexão com o banco de dados e com o [EventHub](https://learn.microsoft.com/pt-br/azure/event-hubs/event-hubs-about).
-Caso opte por usar o banco [sqlite](https://www.sqlite.org/index.html), o arquivo de banco de dados deve ser criado manualmente (database.sqlite) dentro da pasta database.
+Caso opte por usar o banco [sqlite](https://www.sqlite.org/index.html), o arquivo de banco de dados deve ser criado manualmente (database.sqlite) dentro da pasta 'database'.
 Após configuração do arquivo .env, o banco de dados pode ser inicializado com o comando
 
 ```bash
@@ -38,7 +38,7 @@ php artisan serve
 ```
 
 Com o servidor rodando, você pode usar um cliente REST como o [Insomnia](https://insomnia.rest/) ou [Postman](https://www.postman.com/) para testar a API.
-A api responde na raiz do endereço do servidor que foi iniciado no passo anterior. Os parametros de entrada devem ser passados via POST com os dados no formato JSON. O formato de resposta também é JSON.
+A API responde na raiz do endereço do servidor que foi iniciado no passo anterior. Os parâmetros de entrada devem ser passados via POST com os dados no formato JSON. O formato de resposta também é JSON.
 Exemplo de formato do corpo da requisição:
 
 ```json
@@ -50,7 +50,7 @@ Exemplo de formato do corpo da requisição:
 
 ## ⚙️ Executando os testes
 
-Para executar a suite de testes, execute o comando
+Para executar a suíte de testes, execute o comando
 
 ```bash
 php artisan test
@@ -83,7 +83,7 @@ O projeto segue a estrutura de projeto padrão do framework Laravel, mas com uma
 -   **app\Http\Requests\SimulacaoRequest**: Classe que valida se a requisição possui os parametros obrigatórios.
 -   **app\Http\Controllers\SimulacaoController**: Classe que recebe a requisição validada e chama os services que vão produzir a resposta.
 -   **app\Domain\Produtos\MontaRespostaSimulacaoService**: Classe que recebe os parametros da requisição e produz a resposta.
--   **app\Domain\Produtos\IdentificacaoProdutoService**: Classe que consulta qual produto se enquadra nos parametros fornecidos.
+-   **app\Domain\Produtos\IdentificacaoProdutoService**: Classe que consulta qual produto se enquadra nos parâmetros fornecidos.
 -   **app\Domain\Produtos\SimulacaoProdutoService**: Classe que efetua as simulações de financiamento. Conforme classes de calculo de simulação passadas como parametro.
 -   **app\Domain\Financiamento**: Pasta que contém os services que efetuam os cálculos de financiamento para cada sistema de amortização.
 -   **app\Domain\EventHub\NotificarEventHubService**: Classe que efetua o envio das simulações realizadas para o EventHub conforme especificado.
