@@ -87,6 +87,7 @@ O projeto segue a estrutura de projeto padrão do framework Laravel, mas com uma
 -   **app\Domain\Produtos\SimulacaoProdutoService**: Classe que efetua as simulações de financiamento. Conforme classes de calculo de simulação passadas como parametro.
 -   **app\Domain\Financiamento**: Pasta que contém os services que efetuam os cálculos de financiamento para cada sistema de amortização.
 -   **app\Domain\EventHub\NotificarEventHubService**: Classe que efetua o envio das simulações realizadas para o EventHub conforme especificado.
+-   **.github\workflows\laravel.yml**: Arquivo de configuração do GitHub Actions para execução dos testes automatizados no ambiente [GITHUB](https://github.com/).
 
 ## 📄 Licença
 
