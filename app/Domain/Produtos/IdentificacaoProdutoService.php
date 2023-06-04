@@ -11,7 +11,7 @@ class IdentificacaoProdutoService
     public function consultarProduto(Dinheiro $valorFinanciado, int $prazo): Produto
     {
         $valor = $valorFinanciado->getValor();
-        $produto = Produto::where('VR_MINIMO', '<=', $valor)
+        $produtos = Produto::where('VR_MINIMO', '<=', $valor)
             ->where(function (Builder $query) use ($valor) {
                 $query->where('VR_MAXIMO', '>=', $valor)
                     ->orWhereNull('VR_MAXIMO');
@@ -21,10 +21,11 @@ class IdentificacaoProdutoService
                 $query->where('NU_MAXIMO_MESES', '>=', $prazo)
                     ->orWhereNull('NU_MAXIMO_MESES');
             })
-            ->first();
+            ->get();
 
-        throw_if(is_null($produto), \InvalidArgumentException::class, 'Parametros incompatíveis com os produtos cadastrados.');
+        throw_if($produtos->isEmpty(), \InvalidArgumentException::class, 'Parametros incompatíveis com os produtos cadastrados.');
+        throw_if($produtos->count() > 1, \DomainException::class, 'Os parametros de simulação apontam para mais de um produto. Essa situação não foi especificada.');
 
-        return $produto;
+        return $produtos->first();
     }
 }
