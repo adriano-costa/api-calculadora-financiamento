@@ -6,7 +6,8 @@ use App\Domain\EventHub\NotificarEventHubService;
 use App\Domain\Numeros\CastArrayComDecimaisService;
 use App\Domain\Numeros\Dinheiro;
 use App\Domain\Produtos\MontaRespostaSimulacaoService;
-use Illuminate\Http\Request;
+use App\Http\Requests\SimulacaoRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class SimulacaoController extends Controller
 {
@@ -14,9 +15,10 @@ class SimulacaoController extends Controller
     {
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(SimulacaoRequest $request)
     {
-        $parametros = $request->json()->all();
+        $parametros = $request->validated();
+
         $valorDesejado = new Dinheiro($parametros['valorDesejado']);
         $prazo = $parametros['prazo'];
 
@@ -32,7 +34,11 @@ class SimulacaoController extends Controller
 
             return response()->json($respostaEmFloat);
         } catch (\Exception $e) {
-            return response()->json(['erro' => $e->getMessage()], 400);
+            throw new HttpResponseException($this->jsonResponse([
+                'success' => false,
+                'message' => 'Erro ao processar a simulação',
+                'data' => $e->getMessage(),
+            ], 400));
         }
     }
 }

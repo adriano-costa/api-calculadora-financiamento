@@ -3,5 +3,25 @@ content-type: application/json
 
 {
     "valorDesejado": 900,
+    "prazo": 5,
+    "taxa": 0.01
+}
+
+###
+
+POST http://127.0.0.1:8000 HTTP/1.1
+content-type: application/json
+
+{
+    "valorDesejado": 100000,
     "prazo": 5
+}
+
+###
+
+POST http://127.0.0.1:8000 HTTP/1.1
+content-type: application/json
+
+{
+    "valorDesejado": 0.01
 }

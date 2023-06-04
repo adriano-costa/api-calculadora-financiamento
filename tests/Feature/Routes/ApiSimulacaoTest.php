@@ -116,7 +116,22 @@ class ApiSimulacaoTest extends TestCase
         $response
             ->assertStatus(400)
             ->assertJson([
-                'erro' => 'Parametros incompativeis com os produtos cadastrados.',
+                'success' => false,
+                'message' => 'Erro ao processar a simulação',
+                'data' => 'Parametros incompativeis com os produtos cadastrados.',
+            ]);
+    }
+
+    public function test_aplicacao_retorna_mensagem_de_erro_para_parametro_ausente(): void
+    {
+        $response = $this->postJson('/', ['valorDesejado' => 900]);
+
+        $response
+            ->assertStatus(422)
+            ->assertJson([
+                'success' => false,
+                'message' => 'Erro ao validar os parametros fornecidos',
+                'data' => ['prazo' => ['O parametro prazo é obrigatório']],
             ]);
     }
 }
