@@ -13,7 +13,7 @@ Consulte **[Descrição Geral do Projeto](#descrição-geral-do-projeto)** para 
 
 Para execução deste projeto é necessário ter instalado em sua máquina o runtime do [PHP](https://www.php.net/) em versão 8.2.6 ou superior. Para gerenciamento das dependências do projeto é necessário ter instalado o [Composer](https://getcomposer.org/).
 Sendo um projeto desenvolvido a partir do framework [Laravel](https://laravel.com/), é necessário ter instaladas as extenções necessárias ao laravel instaladas conforme descrito na [documentação](https://laravel.com/docs/10.x/deployment#server-requirements).
-Adicionamente serão necessárias as extenções PHP [sqlsrv](https://www.php.net/manual/pt_BR/book.sqlsrv.php), [pdo_sqlsrv](https://www.php.net/manual/pt_BR/ref.pdo-sqlsrv.php), [bcmath](https://www.php.net/manual/en/book.bc.php) e [GMP](https://www.php.net/manual/en/book.gmp.php).
+Adicionamente serão necessárias as extenções PHP [SQLSRV](https://www.php.net/manual/pt_BR/book.sqlsrv.php), [PDO_SQLSRV](https://www.php.net/manual/pt_BR/ref.pdo-sqlsrv.php), [BCMATH](https://www.php.net/manual/en/book.bc.php) e [GMP](https://www.php.net/manual/en/book.gmp.php).
 
 ### 🔧 Instalação
 
