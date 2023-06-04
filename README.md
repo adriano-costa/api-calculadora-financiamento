@@ -74,10 +74,6 @@ docker build -t nomeDaImagem .
 -   [Docker](https://www.docker.com/) - Plataforma para execução de aplicações em containers
 -   [VsCode](https://code.visualstudio.com/) - Editor de código
 
-## 📄 Licença
-
-Este projeto está sob a licença [MIT](https://www.mit.edu/~amini/LICENSE.md).
-
 ## Descrição Geral do Projeto
 
 O projeto segue a estrutura de projeto padrão do framework Laravel, mas com uma mudança em relação ao agrupamento de classes relacionadas as regras de negócio sendo agrupadas no namespace 'App\Domain'.
@@ -91,3 +87,7 @@ O projeto segue a estrutura de projeto padrão do framework Laravel, mas com uma
 -   **app\Domain\Produtos\SimulacaoProdutoService**: Classe que efetua as simulações de financiamento. Conforme classes de calculo de simulação passadas como parametro.
 -   **app\Domain\Financiamento**: Pasta que contém os services que efetuam os cálculos de financiamento para cada sistema de amortização.
 -   **app\Domain\EventHub\NotificarEventHubService**: Classe que efetua o envio das simulações realizadas para o EventHub conforme especificado.
+
+## 📄 Licença
+
+Este projeto está sob a licença [MIT](https://www.mit.edu/~amini/LICENSE.md).
