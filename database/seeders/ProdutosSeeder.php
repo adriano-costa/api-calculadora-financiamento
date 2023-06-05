@@ -55,13 +55,13 @@ class ProdutosSeeder extends Seeder
         ];
 
         if (config('database.default') == 'sqlsrv') {
-            DB::unprepared('SET IDENTITY_INSERT produtos ON');
+            DB::unprepared('SET IDENTITY_INSERT produto ON');
         }
         foreach ($produtos as $produto) {
             Produto::create($produto);
         }
         if (config('database.default') == 'sqlsrv') {
-            DB::unprepared('SET IDENTITY_INSERT produtos OFF');
+            DB::unprepared('SET IDENTITY_INSERT produto OFF');
         }
     }
 }

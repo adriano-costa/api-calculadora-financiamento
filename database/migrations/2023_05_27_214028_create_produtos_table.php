@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('produtos', function (Blueprint $table) {
+        Schema::create('produto', function (Blueprint $table) {
             $table->id('CO_PRODUTO')->autoIncrement(); //CO_PRODUTO int NOT NULL primary key,
             $table->string('NO_PRODUTO', 200); //NO_PRODUTO varchar(200) NOT NULL,
             $table->unsignedDecimal('PC_TAXA_JUROS', 10, 9); //PC_TAXA_JUROS numeric(10, 9) NOT NULL,
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('produtos');
+        Schema::dropIfExists('produto');
     }
 };
