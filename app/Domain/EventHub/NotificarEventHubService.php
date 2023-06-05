@@ -14,12 +14,13 @@ class NotificarEventHubService
 
         $respostaStringJson = json_encode($resposta);
 
-        $resultado = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'Authorization' => $this->gerarAssinaturaEventHub(),
-            'Host' => $host,
-            'Content-Length' => strlen($respostaStringJson),
-        ])
+        $resultado = Http::withoutVerifying() // Não verificar o certificado SSL, necessário para execução na intranet
+            ->withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => $this->gerarAssinaturaEventHub(),
+                'Host' => $host,
+                'Content-Length' => strlen($respostaStringJson),
+            ])
             ->post($url, $respostaStringJson);
 
         if ($resultado->failed()) {
