@@ -1,7 +1,7 @@
 ## API Calculadora Financiamento
 
 Projeto simples que implementa uma API para uma calculadora de financiamentos.
-Esse projeto foi desenvolvido como atividade avaliativa para participação no processo seletivo para o Hackathon Caixa VITEC 2023.
+Esse projeto foi desenvolvido como atividade avaliativa para participação em um processo seletivo.
 
 ## 🚀 Começando
 
@@ -86,7 +86,7 @@ O projeto segue a estrutura de projeto padrão do framework Laravel, mas com uma
 -   **app\Domain\Produtos\IdentificacaoProdutoService**: Classe que consulta qual produto se enquadra nos parâmetros fornecidos.
 -   **app\Domain\Produtos\SimulacaoProdutoService**: Classe que efetua as simulações de financiamento. Conforme classes de calculo de simulação passadas como parametro.
 -   **app\Domain\Financiamento**: Pasta que contém os services que efetuam os cálculos de financiamento para cada sistema de amortização.
--   **app\Domain\EventHub\NotificarEventHubService**: Classe que efetua o envio das simulações realizadas para o EventHub conforme especificado.
+-   **app\Domain\EventHub\NotificarEventHubService**: Classe que efetua o envio das simulações realizadas para o EventHub conforme especificado nos requisitos da seleção.
 -   **.github\workflows\laravel.yml**: Arquivo de configuração do GitHub Actions para execução dos testes automatizados no ambiente [GITHUB](https://github.com/).
 
 ## 📄 Licença
