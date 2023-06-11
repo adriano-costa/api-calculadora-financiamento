@@ -1,5 +1,5 @@
 
-POST http://127.0.0.1:8000 HTTP/1.1
+POST http://127.0.0.1:8000/v1/simulacao HTTP/1.1
 content-type: application/json
 
 {
@@ -10,7 +10,7 @@ content-type: application/json
 
 ###
 
-POST http://127.0.0.1:8000 HTTP/1.1
+POST http://127.0.0.1:8000/v1/simulacao HTTP/1.1
 content-type: application/json
 
 {
@@ -20,7 +20,7 @@ content-type: application/json
 
 ###
 
-POST http://127.0.0.1:8000 HTTP/1.1
+POST http://127.0.0.1:8000/v1/simulacao HTTP/1.1
 content-type: application/json
 
 {
