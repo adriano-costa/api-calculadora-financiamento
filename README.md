@@ -75,7 +75,10 @@ A explicação de como configurar um fluxo de CI/CD no Azure com uso de Github A
 
 ## Descrição Geral do Projeto
 
-O projeto segue a estrutura de projeto padrão do framework Laravel, mas com uma mudança em relação ao agrupamento de classes relacionadas as regras de negócio sendo agrupadas no namespace 'App\Domain'.
+O projeto segue a estrutura de projeto padrão do framework Laravel, mas com uma mudança em relação ao agrupamento de classes relacionadas as regras de negócio dentro do namespace 'App\Domain'.
+A API para simulações é disponibilizada na URL '/v1/simulacao'. A API recebe os parâmetros de entrada via POST no formato JSON e retorna um JSON com a resposta da simulação.
+Um evento é disparado para o EventHub com as simulações realizadas conforme especificado nos requisitos da seleção. Esse envio é feito através de um job Laravel executado após o envio da resposta ao cliente.
+A API não possui restrição de acesso via autenticação, esse recurso não estava na especificação.
 
 ### Principais Arquivos e Pastas
 
