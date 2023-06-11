@@ -4,9 +4,9 @@ namespace App\Domain\EventHub;
 
 use Illuminate\Support\Facades\Http;
 
-class NotificarEventHubService
+class EventHubProducerService
 {
-    public function notificar(array $resposta): void
+    public function enviarEvento(array $resposta): void
     {
         $host = config('eventhub.host');
         $entity = config('eventhub.entity_path');
@@ -14,7 +14,7 @@ class NotificarEventHubService
 
         $respostaStringJson = json_encode($resposta);
 
-        $resultado = Http::withoutVerifying() // Não verificar o certificado SSL, necessário para execução na intranet
+        $resultado = Http::withoutVerifying()
             ->withHeaders([
                 'Content-Type' => 'application/json',
                 'Authorization' => $this->gerarAssinaturaEventHub(),

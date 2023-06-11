@@ -22,8 +22,8 @@ class ApiSimulacaoTest extends TestCase
 
     public function test_aplicacao_retorna_resposta_bem_sucussedida(): void
     {
-        $this->mock(\App\Domain\EventHub\NotificarEventHubService::class, function ($mock) {
-            $mock->shouldReceive('notificar')->once();
+        $this->mock(\App\Domain\EventHub\EventHubProducerService::class, function ($mock) {
+            $mock->shouldReceive('enviarEvento')->once();
         });
 
         $response = $this->postJson('/', ['valorDesejado' => 900, 'prazo' => 5]);

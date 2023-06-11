@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Domain\EventHub\NotificarEventHubService;
+use App\Domain\EventHub\EventHubProducerService;
 use App\Domain\Numeros\CastArrayComDecimaisService;
 use App\Domain\Numeros\Dinheiro;
 use App\Domain\Produtos\MontaRespostaSimulacaoService;
@@ -11,7 +11,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class SimulacaoController extends Controller
 {
-    public function __construct(private MontaRespostaSimulacaoService $service, private CastArrayComDecimaisService $castService, private NotificarEventHubService $notificarEventHubService)
+    public function __construct(private MontaRespostaSimulacaoService $service, private CastArrayComDecimaisService $castService, private EventHubProducerService $EventHubProducerService)
     {
     }
 
@@ -30,7 +30,7 @@ class SimulacaoController extends Controller
             $respostaEmFloat = $this->castService->tratarDecimaisParaFloat($resposta);
 
             //enviar a simulação para o EventHub
-            $this->notificarEventHubService->notificar($respostaEmFloat);
+            $this->EventHubProducerService->enviarEvento($respostaEmFloat);
 
             return response()->json($respostaEmFloat);
         } catch (\Exception $e) {
