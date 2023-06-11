@@ -12,20 +12,23 @@ class EventHubProducerService
         $entity = config('eventhub.entity_path');
         $url = 'https://'.$host.'/'.$entity.'/messages';
 
-        $resultado = Http::withoutVerifying()
-            ->withHeaders([
-                'Content-Type' => 'application/json',
-                'Authorization' => $this->gerarAssinaturaEventHub(),
-                'Host' => $host,
-                'Content-Length' => strlen($eventoPayload),
-            ])
+        $requisicao = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => $this->gerarAssinaturaEventHub(),
+            'Host' => $host,
+            'Content-Length' => strlen($eventoPayload),
+        ])
             ->post($url, $eventoPayload);
 
-        if ($resultado->failed()) {
-            throw new \Exception('Erro: '.$resultado->body());
+        if (! config('eventhub.validar_certificado_ssl')) {
+            $requisicao->withoutVerifying();
         }
 
-        if ($resultado->status() != 201) {
+        if ($requisicao->failed()) {
+            throw new \Exception('Erro: '.$requisicao->body());
+        }
+
+        if ($requisicao->status() != 201) {
             throw new \Exception('Erro: Aplicação Aplicação não conseguiu enviar a mensagem para o EventHub. Código de erro: '.$resultado->status().'. Mensagem: '.$resultado->body().'.');
         }
     }

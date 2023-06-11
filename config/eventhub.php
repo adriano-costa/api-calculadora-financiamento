@@ -5,4 +5,5 @@ return [
     'sas_key' => env('EVENT_HUB_SAS_KEY'),
     'host' => env('EVENT_HUB_HOST'),
     'entity_path' => env('EVENT_HUB_ENTITY_PATH'),
+    'validar_certificado_ssl' => env('EVENT_HUB_VALIDAR_CERTIFICADO_SSL', true),
 ];
