@@ -41,9 +41,12 @@ Com o servidor rodando, você pode usar um cliente REST como o [Insomnia](https:
 A API responde na raiz do endereço do servidor que foi iniciado no passo anterior. Os parâmetros de entrada devem ser passados via POST com os dados no formato JSON. O formato de resposta também é JSON.
 Exemplo de formato do corpo da requisição:
 
-```json
+```bash
+POST http://127.0.0.1:8000/v1/simulacao HTTP/1.1
+content-type: application/json
+
 {
-    "valorDesejado": 900,
+    "valorDesejado": 1000,
     "prazo": 5
 }
 ```
@@ -82,7 +85,7 @@ O projeto segue a estrutura de projeto padrão do framework Laravel, mas com uma
 -   **app\Domain\Produtos\IdentificacaoProdutoService**: Classe que consulta qual produto se enquadra nos parâmetros fornecidos.
 -   **app\Domain\Produtos\SimulacaoProdutoService**: Classe que efetua as simulações de financiamento. Conforme classes de calculo de simulação passadas como parametro.
 -   **app\Domain\Financiamento**: Pasta que contém os services que efetuam os cálculos de financiamento para cada sistema de amortização.
--   **app\Domain\EventHub\NotificarEventHubService**: Classe que efetua o envio das simulações realizadas para o EventHub conforme especificado nos requisitos da seleção.
+-   **app\Domain\EventHub\EventHubProducerService**: Classe que efetua o envio das simulações realizadas para o EventHub conforme especificado nos requisitos da seleção.
 -   **.github\workflows\laravel.yml**: Arquivo de configuração do GitHub Actions para execução dos testes automatizados no ambiente [GITHUB](https://github.com/).
 
 ## 📄 Licença
