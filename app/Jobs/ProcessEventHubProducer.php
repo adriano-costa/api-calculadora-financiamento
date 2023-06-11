@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class ProcessEventHubProducer implements ShouldQueue
 {
@@ -18,9 +19,9 @@ class ProcessEventHubProducer implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(string $simulacao)
+    public function __construct(array $simulacaoArray)
     {
-        $this->simulacao = $simulacao;
+        $this->simulacao = json_encode($simulacaoArray);
     }
 
     /**
@@ -28,6 +29,16 @@ class ProcessEventHubProducer implements ShouldQueue
      */
     public function handle(EventHubProducerService $service): void
     {
-        $service->enviarEvento($this->simulacao);
+        try {
+            $service->enviarEvento($this->simulacao);
+        } catch (\Exception $e) {
+            Log::error('Erro ao tentar enviar a simulação para o EventHub',
+                [
+                    'simulacao' => $this->simulacao,
+                    'erro' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString(),
+                ]
+            );
+        }
     }
 }

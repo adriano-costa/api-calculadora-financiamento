@@ -25,11 +25,11 @@ class EventHubProducerService
         }
 
         if ($requisicao->failed()) {
-            throw new \Exception('Erro: '.$requisicao->body());
+            throw new \Exception('Falha no processo de requisição http ao EventHub. Corpo da requisição devolvida: '.$requisicao->body());
         }
 
         if ($requisicao->status() != 201) {
-            throw new \Exception('Erro: Aplicação Aplicação não conseguiu enviar a mensagem para o EventHub. Código de erro: '.$resultado->status().'. Mensagem: '.$resultado->body().'.');
+            throw new \Exception('Erro: Aplicação Aplicação não conseguiu enviar a mensagem para o EventHub. Código de erro: '.$requisicao->status().'. Mensagem: '.$requisicao->body().'.');
         }
     }
 

@@ -13,6 +13,6 @@ class ProcessEventHubTest extends TestCase
             $mock->shouldReceive('enviarEvento')->once();
         });
 
-        ProcessEventHubProducer::dispatch('asdasd asd asd asdasd');
+        ProcessEventHubProducer::dispatch(['fake' => 'data']);
     }
 }
