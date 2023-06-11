@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Domain\EventHub\EventHubProducerService;
 use App\Domain\Numeros\CastArrayComDecimaisService;
 use App\Domain\Numeros\Dinheiro;
 use App\Domain\Produtos\MontaRespostaSimulacaoService;
 use App\Http\Requests\SimulacaoRequest;
+use App\Jobs\ProcessEventHubProducer;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class SimulacaoController extends Controller
 {
-    public function __construct(private MontaRespostaSimulacaoService $service, private CastArrayComDecimaisService $castService, private EventHubProducerService $EventHubProducerService)
+    public function __construct(private MontaRespostaSimulacaoService $service, private CastArrayComDecimaisService $castService)
     {
     }
 
@@ -31,7 +31,7 @@ class SimulacaoController extends Controller
             $respostaApi = response()->json($respostaEmFloat);
 
             //enviar a simulação para o EventHub
-            $this->EventHubProducerService->enviarEvento($respostaApi);
+            ProcessEventHubProducer::dispatchAfterResponse($respostaApi);
 
             return $respostaApi;
         } catch (\Exception $e) {
