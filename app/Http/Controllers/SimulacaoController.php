@@ -28,11 +28,12 @@ class SimulacaoController extends Controller
             //Essa não é uma boa prática, mas foi feita para devido a especificação da tarefa.
             //Valores monetários deveriam ser representados como inteiros ou como strings
             $respostaEmFloat = $this->castService->tratarDecimaisParaFloat($resposta);
+            $respostaApi = response()->json($respostaEmFloat);
 
             //enviar a simulação para o EventHub
-            $this->EventHubProducerService->enviarEvento($respostaEmFloat);
+            $this->EventHubProducerService->enviarEvento($respostaApi);
 
-            return response()->json($respostaEmFloat);
+            return $respostaApi;
         } catch (\Exception $e) {
             throw new HttpResponseException($this->jsonResponse([
                 'success' => false,

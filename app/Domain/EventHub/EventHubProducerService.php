@@ -6,22 +6,20 @@ use Illuminate\Support\Facades\Http;
 
 class EventHubProducerService
 {
-    public function enviarEvento(array $resposta): void
+    public function enviarEvento(string $eventoPayload): void
     {
         $host = config('eventhub.host');
         $entity = config('eventhub.entity_path');
         $url = 'https://'.$host.'/'.$entity.'/messages';
-
-        $respostaStringJson = json_encode($resposta);
 
         $resultado = Http::withoutVerifying()
             ->withHeaders([
                 'Content-Type' => 'application/json',
                 'Authorization' => $this->gerarAssinaturaEventHub(),
                 'Host' => $host,
-                'Content-Length' => strlen($respostaStringJson),
+                'Content-Length' => strlen($eventoPayload),
             ])
-            ->post($url, $respostaStringJson);
+            ->post($url, $eventoPayload);
 
         if ($resultado->failed()) {
             throw new \Exception('Erro: '.$resultado->body());
