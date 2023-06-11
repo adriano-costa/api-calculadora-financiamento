@@ -58,11 +58,7 @@ php artisan test
 
 ## 📦 Implantação
 
-No arquivo dockerfile estão as instruções para criação de uma imagem [docker](https://www.docker.com/) para execução do projeto. Para criar a imagem, execute o comando
-
-```bash
-docker build -t nomeDaImagem .
-```
+A explicação de como configurar um fluxo de CI/CD no Azure com uso de Github Actions pode ser encontrada no arquivo [deploy.md](docs/deploy.md).
 
 ## 🛠️ Construído com
 
