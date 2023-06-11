@@ -26,7 +26,7 @@ class ApiSimulacaoTest extends TestCase
             $mock->shouldReceive('enviarEvento')->once();
         });
 
-        $response = $this->postJson('/', ['valorDesejado' => 900, 'prazo' => 5]);
+        $response = $this->postJson('/v1/simulacao', ['valorDesejado' => 900, 'prazo' => 5]);
 
         $response
             ->assertStatus(200)
@@ -111,7 +111,7 @@ class ApiSimulacaoTest extends TestCase
 
     public function test_aplicacao_retorna_mensagem_de_erro_para_parametro_com_valor_indequado(): void
     {
-        $response = $this->postJson('/', ['valorDesejado' => 900, 'prazo' => 96]);
+        $response = $this->postJson('/v1/simulacao', ['valorDesejado' => 900, 'prazo' => 96]);
 
         $response
             ->assertStatus(400)
@@ -124,7 +124,7 @@ class ApiSimulacaoTest extends TestCase
 
     public function test_aplicacao_retorna_mensagem_de_erro_para_parametro_ausente(): void
     {
-        $response = $this->postJson('/', ['valorDesejado' => 900]);
+        $response = $this->postJson('/v1/simulacao', ['valorDesejado' => 900]);
 
         $response
             ->assertStatus(422)

@@ -14,4 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/', SimulacaoController::class);
+Route::prefix('/v1')->group(function () {
+    Route::post('simulacao', SimulacaoController::class);
+});
