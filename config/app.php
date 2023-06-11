@@ -185,5 +185,5 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
-    'rate_limit_per_minute' => env('RATE_LIMIT_PER_MINUTE', 60),
+    'rate_limit_per_minute' => env('APP_RATE_LIMIT_PER_MINUTE', 60),
 ];

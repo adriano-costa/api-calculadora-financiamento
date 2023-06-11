@@ -25,7 +25,7 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         RateLimiter::for('api', function (Request $request) {
-            if (config('app.rate_limit_per_minute') === 0) {
+            if (config('app.rate_limit_per_minute') == 0) {
                 return Limit::none();
             }
 

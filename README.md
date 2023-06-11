@@ -79,6 +79,7 @@ O projeto segue a estrutura de projeto padrão do framework Laravel, mas com uma
 A API para simulações é disponibilizada na URL '/v1/simulacao'. A API recebe os parâmetros de entrada via POST no formato JSON e retorna um JSON com a resposta da simulação.
 Um evento é disparado para o EventHub com as simulações realizadas conforme especificado nos requisitos da seleção. Esse envio é feito através de um job Laravel executado após o envio da resposta ao cliente.
 A API não possui restrição de acesso via autenticação, esse recurso não estava na especificação.
+Apesar de não haver identificação de usuários, a API conta com rate limit para evitar abusos de uso. O limite de requisições por minuto por IP é configurado nas variáveis de ambiente.
 
 ### Principais Arquivos e Pastas
 
