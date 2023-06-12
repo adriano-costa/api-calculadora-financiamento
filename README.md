@@ -70,7 +70,6 @@ A explicação de como configurar um fluxo de CI/CD no Azure com uso de Github A
 -   [Composer](https://getcomposer.org/) - Gerenciador de dependências
 -   [Brick/Math](https://github.com/brick/math) - Biblioteca para cálculos matemáticos
 -   [PHPUnit](https://phpunit.de/) - Framework para testes automatizados
--   [Docker](https://www.docker.com/) - Plataforma para execução de aplicações em containers
 -   [VsCode](https://code.visualstudio.com/) - Editor de código
 
 ## Descrição Geral do Projeto
@@ -94,7 +93,10 @@ Visando evitar erros de arredondamento resultantes da aritmética de ponto flutu
 -   **app\Domain\Produtos\SimulacaoProdutoService**: Classe que efetua as simulações de financiamento. Conforme classes de calculo de simulação passadas como parâmetro.
 -   **app\Domain\Financiamento**: Pasta que contém os services que efetuam os cálculos de financiamento para cada sistema de amortização.
 -   **app\Domain\EventHub\EventHubProducerService**: Classe que efetua o envio das simulações realizadas para o EventHub conforme especificado nos requisitos.
+-   **.env**: Arquivo de configuração do Laravel. Contém as variáveis de ambiente que devem ser configuradas para o funcionamento da aplicação.
 -   **.github\workflows\deploy_master.yml**: Arquivo de configuração do GitHub Actions para execução dos testes automatizados [GITHUB](https://github.com/) e deploy da aplicação para o serviço da Azure.
+-   **dockerfile**: Arquivo de configuração do [DOCKER](https://www.docker.com/) para execução em ambiente de desenvolvimento.
+-   **default-nginx-config**: Arquivo de configuração do servidor web [NGINX](https://www.nginx.com/) para execução em ambiente do Azure. Ele altera o diretório raiz do servidor para a pasta 'public' do projeto.
 
 ## 📄 Licença
 
