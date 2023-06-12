@@ -38,7 +38,7 @@ php artisan serve
 ```
 
 Com o servidor em execução, a documentação da API pode ser consultada através do endereço http://localhost:8000/api/documentation. A documentação foi gerada com uso do [Swagger](https://swagger.io/).
-Você pode usar um cliente REST como o [Insomnia](https://insomnia.rest/) ou [Postman](https://www.postman.com/) para testar a API.
+Você pode executar testes na API através da página da documentação ou usando um cliente REST como o [Insomnia](https://insomnia.rest/) ou [Postman](https://www.postman.com/).
 Os parâmetros de entrada devem ser passados via POST com os dados no formato JSON. O formato de resposta também é JSON.
 Exemplo de formato do corpo da requisição:
 
