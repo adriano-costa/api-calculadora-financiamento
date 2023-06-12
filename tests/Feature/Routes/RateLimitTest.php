@@ -10,6 +10,7 @@ class RateLimitTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->artisan('cache:clear');
         $this->artisan('db:seed');
         //mockar o serviço de notificação eventhub
     }
