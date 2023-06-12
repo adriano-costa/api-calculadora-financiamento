@@ -79,11 +79,11 @@ O projeto segue a estrutura de projeto padrão do framework Laravel, mas com uma
 
 A API para simulações é disponibilizada na URL '/v1/simulacao'. A API recebe os parâmetros de entrada via POST no formato JSON e retorna um JSON com a resposta da simulação.
 
-Um evento é disparado para o EventHub com as simulações realizadas conforme especificado nos requisitos. Esse envio é feito através de um job Laravel executado após o envio da resposta ao cliente. A comunicação com o EventHub é realizada através da API REST do Azure. Conforme esta [análise](https://vincentlauzon.com/2018/06/05/event-hubs-ingestion-performance-and-throughput/) a opção pela API REST oferece menor latência, encurtando o tempo de processamento da requisição. Porém para volumes de milhares de requisições por segundo, a opção mais eficiente é usar um stream de eventos através do protocolo AMQP. Nesta segunda abordagem, cada requisição deve salvar os dados do evento num serviço de fila (ou banco de dados) e um worker rodando em outra instência faria o envio para o EventHub. Essa opção pode ser implementada com uso da extenção [Rdkafka](https://arnaud.le-blanc.net/php-rdkafka-doc/phpdoc/book.rdkafka.html).
+Um evento é disparado para o EventHub com as simulações realizadas conforme especificado nos requisitos. Esse envio é feito através de um job Laravel executado após o envio da resposta ao cliente. A comunicação com o EventHub é realizada através da API REST do Azure. Conforme esta [análise](https://vincentlauzon.com/2018/06/05/event-hubs-ingestion-performance-and-throughput/) a opção pela API REST oferece menor latência, encurtando o tempo de processamento da requisição. Porém para volumes de milhares de requisições por segundo, a opção mais eficiente é usar um stream de eventos através do protocolo AMQP. Nesta segunda abordagem, cada requisição deve salvar os dados do evento num serviço de fila (ou banco de dados) e um worker rodando em outra instância faria o envio para o EventHub. Essa opção pode ser implementada com uso da extensão [Rdkafka](https://arnaud.le-blanc.net/php-rdkafka-doc/phpdoc/book.rdkafka.html).
 
 A API não possui restrição de acesso via autenticação, esse recurso não estava na especificação. Apesar de não haver identificação de usuários, a API conta com rate limit para evitar abusos de uso. O limite de requisições por IP por minuto é configurado nas variáveis de ambiente.
 
-Visando evitar erros de arredondamento resultantes da aritmética de ponto flutuante, os cálculos são feitos com a biblioteca [Brick/Math](https://github.com/brick/math). Os valores retornados na resposta da API são arredondados para duas casas decimais e representados como floats conforme apresentado na especificação.
+Visando evitar erros de arredondamento resultantes da aritmética de ponto flutuante, os cálculos são feitos com a biblioteca [Brick/Math](https://github.com/brick/math). Os valores retornados na resposta da API são arredondados para duas casas decimais e representados como float conforme apresentado na especificação.
 
 ### Principais Arquivos e Pastas
 
@@ -91,7 +91,7 @@ Visando evitar erros de arredondamento resultantes da aritmética de ponto flutu
 -   **app\Http\Controllers\SimulacaoController**: Classe que recebe a requisição validada e chama os services que vão produzir a resposta.
 -   **app\Domain\Produtos\MontaRespostaSimulacaoService**: Classe que recebe os parâmetros da requisição e produz a resposta.
 -   **app\Domain\Produtos\IdentificacaoProdutoService**: Classe que consulta qual produto se enquadra nos parâmetros fornecidos.
--   **app\Domain\Produtos\SimulacaoProdutoService**: Classe que efetua as simulações de financiamento. Conforme classes de calculo de simulação passadas como parâmetro.
+-   **app\Domain\Produtos\SimulacaoProdutoService**: Classe que efetua as simulações de financiamento. Conforme classes de cálculo de simulação passadas como parâmetro.
 -   **app\Domain\Financiamento**: Pasta que contém os services que efetuam os cálculos de financiamento para cada sistema de amortização.
 -   **app\Domain\EventHub\EventHubProducerService**: Classe que efetua o envio das simulações realizadas para o EventHub conforme especificado nos requisitos.
 -   **.env**: Arquivo de configuração do Laravel. Contém as variáveis de ambiente que devem ser configuradas para o funcionamento da aplicação.
