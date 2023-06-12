@@ -12,7 +12,6 @@ class EventHubProducerService
     private string $sasKeyName;
     private string $sasKeyValue;
 
-
     function __construct()
     {
         $this->host = config('eventhub.host');
@@ -24,6 +23,8 @@ class EventHubProducerService
 
     public function enviarEvento(string $eventoPayload): void
     {
+        if(app()->runningUnitTests()) return;
+
         $requisicaoPendente = Http::withHeaders([
             'Content-Type' => 'application/json',
             'Authorization' => $this->gerarAssinaturaEventHub(),
