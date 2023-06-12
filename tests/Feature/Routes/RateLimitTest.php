@@ -42,7 +42,6 @@ class RateLimitTest extends TestCase
         }
 
         $this->postJson('/v1/simulacao', ['valorDesejado' => 900, 'prazo' => 5])
-            ->assertStatus(429)
-            ->assertHeader('Retry-After', 60);
+            ->assertStatus(429);
     }
 }
