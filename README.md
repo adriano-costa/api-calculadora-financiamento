@@ -37,8 +37,9 @@ Para subir um servidor local para testes, execute o comando
 php artisan serve
 ```
 
-Com o servidor rodando, você pode usar um cliente REST como o [Insomnia](https://insomnia.rest/) ou [Postman](https://www.postman.com/) para testar a API.
-A API responde na raiz do endereço do servidor que foi iniciado no passo anterior. Os parâmetros de entrada devem ser passados via POST com os dados no formato JSON. O formato de resposta também é JSON.
+Com o servidor em execução, a documentação da API pode ser consultada através do endereço http://localhost:8000/api/documentation. A documentação foi gerada com uso do [Swagger](https://swagger.io/).
+Você pode usar um cliente REST como o [Insomnia](https://insomnia.rest/) ou [Postman](https://www.postman.com/) para testar a API.
+Os parâmetros de entrada devem ser passados via POST com os dados no formato JSON. O formato de resposta também é JSON.
 Exemplo de formato do corpo da requisição:
 
 ```bash
