@@ -6,23 +6,36 @@ use Illuminate\Support\Facades\Http;
 
 class EventHubProducerService
 {
+    private string $host;
+    private string $entity;
+    private string $url;
+    private string $sasKeyName;
+    private string $sasKeyValue;
+
+
+    function __construct()
+    {
+        $this->host = config('eventhub.host');
+        $this->entity = config('eventhub.entity_path');
+        $this->url = 'https://'.$this->host.'/'.$this->entity.'/messages';
+        $this->sasKeyName = config('eventhub.sas_key_name');
+        $this->sasKeyValue = config('eventhub.sas_key');
+    }
+
     public function enviarEvento(string $eventoPayload): void
     {
-        $host = config('eventhub.host');
-        $entity = config('eventhub.entity_path');
-        $url = 'https://'.$host.'/'.$entity.'/messages';
-
-        $requisicao = Http::withHeaders([
+        $requisicaoPendente = Http::withHeaders([
             'Content-Type' => 'application/json',
             'Authorization' => $this->gerarAssinaturaEventHub(),
-            'Host' => $host,
+            'Host' => $this->host,
             'Content-Length' => strlen($eventoPayload),
-        ])
-            ->post($url, $eventoPayload);
+        ]);
 
         if (! config('eventhub.validar_certificado_ssl')) {
-            $requisicao->withoutVerifying();
+            $requisicaoPendente->withoutVerifying();
         }
+
+        $requisicao = $requisicaoPendente->post($this->url, $eventoPayload);
 
         if ($requisicao->failed()) {
             throw new \Exception('Falha no processo de requisição http ao EventHub. Corpo da requisição devolvida: '.$requisicao->body());
@@ -35,13 +48,9 @@ class EventHubProducerService
 
     private function gerarAssinaturaEventHub()
     {
-        $host = config('eventhub.host');
-        $entity = config('eventhub.entity_path');
-        $uri = $host.'/'.$entity;
-        $sasKeyName = config('eventhub.sas_key_name');
-        $sasKeyValue = config('eventhub.sas_key');
+        $uri = $this->host.'/'.$this->entity;
 
-        return $this->generateSasToken($uri, $sasKeyName, $sasKeyValue);
+        return $this->generateSasToken($uri, $this->sasKeyName, $this->sasKeyValue);
     }
 
     /**
