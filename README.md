@@ -54,7 +54,7 @@ content-type: application/json
 
 ## ⚙️ Executando os testes
 
-Para executar a suíte de testes, execute o comando
+Primeiramente, crie um arquivo com nome 'database.sqlite' dentro da pasta 'database'. Por padrão esse é o banco usado para testes. Para executar a suíte de testes, execute o comando
 
 ```bash
 php artisan test
