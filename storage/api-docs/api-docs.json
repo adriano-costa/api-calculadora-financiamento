@@ -1,0 +1,123 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Documentação da API de Simulação de Financiamento",
+        "description": "Projeto simples que implementa uma API para uma calculadora de financiamentos.",
+        "contact": {
+            "email": "adriano.dmcosta@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/v1/simulacao": {
+            "post": {
+                "tags": [
+                    "Simulacao"
+                ],
+                "summary": "Simular um financiamento",
+                "description": "Retorna os dados da simulação de um financiamento segundo os parâmetros informados. São calculados os sistemas de amortização SAC e PRICE.",
+                "operationId": "d7b9ec29b8265401028b2f853caa552a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "valorDesejado",
+                                    "prazo"
+                                ],
+                                "properties": {
+                                    "valorDesejado": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "200.00"
+                                    },
+                                    "prazo": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "codigoProduto": {
+                                            "type": "number",
+                                            "format": "int",
+                                            "example": "1"
+                                        },
+                                        "descricaoProduto": {
+                                            "type": "string",
+                                            "example": "Produto 6"
+                                        },
+                                        "taxaJuros": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": "0.0179"
+                                        },
+                                        "resultadoSimulacao": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "tipo": {
+                                                        "type": "string",
+                                                        "example": "SAC"
+                                                    },
+                                                    "parcelas": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "numero": {
+                                                                    "type": "integer",
+                                                                    "format": "int32",
+                                                                    "example": "1"
+                                                                },
+                                                                "valorAmortizacao": {
+                                                                    "type": "number",
+                                                                    "format": "float",
+                                                                    "example": "200.00"
+                                                                },
+                                                                "valorJuros": {
+                                                                    "type": "number",
+                                                                    "format": "float",
+                                                                    "example": "3.58"
+                                                                },
+                                                                "valorPrestacao": {
+                                                                    "type": "number",
+                                                                    "format": "float",
+                                                                    "example": "203.58"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação dos parametros"
+                    },
+                    "400": {
+                        "description": "Erro ao processar a simulação"
+                    }
+                }
+            }
+        }
+    }
+}
