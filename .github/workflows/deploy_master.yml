@@ -63,24 +63,24 @@ jobs:
           name: php-app
           path: .
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: "Production"
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   environment:
+  #     name: "Production"
+  #     url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4.1.7
-        with:
-          name: php-app
+  #   steps:
+  #     - name: Download artifact from build job
+  #       uses: actions/download-artifact@v4.1.7
+  #       with:
+  #         name: php-app
 
-      - name: "Deploy to Azure Web App"
-        uses: azure/webapps-deploy@v2
-        id: deploy-to-webapp
-        with:
-          app-name: "calculadora-cicd-a81k"
-          slot-name: "Production"
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1725FCD552584E2ABB60BF457F626C00 }}
-          package: .
+  #     - name: "Deploy to Azure Web App"
+  #       uses: azure/webapps-deploy@v2
+  #       id: deploy-to-webapp
+  #       with:
+  #         app-name: "calculadora-cicd-a81k"
+  #         slot-name: "Production"
+  #         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1725FCD552584E2ABB60BF457F626C00 }}
+  #         package: .
